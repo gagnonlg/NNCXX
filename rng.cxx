@@ -10,9 +10,9 @@ static gsl_rng* rnginit()
 
 	std::ifstream urandom("/dev/urandom");
 	if (urandom.good())
-		urandom.read((char*) &seed, sizeof(seed));
+		urandom.read(reinterpret_cast<char*>(&seed), sizeof(seed));
 	else
-		seed = (unsigned long int) std::time(nullptr);
+		seed = static_cast<unsigned long int>(std::time(nullptr));
 
 	gsl_rng *rng = gsl_rng_alloc(gsl_rng_mt19937);
 	gsl_rng_set(rng, seed);
@@ -30,7 +30,7 @@ void seed(unsigned long int value)
 
 float uniform(float min, float max)
 {
-	float sample = (float) gsl_rng_uniform(GLOBAL_RNG);
+	float sample = static_cast<float>(gsl_rng_uniform(GLOBAL_RNG));
 	return sample * (max - min) + min;
 }
 }

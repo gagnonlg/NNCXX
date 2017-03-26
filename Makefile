@@ -1,14 +1,23 @@
-all: network.o test_Affine
+CXXFLAGS = -O2 -Wall -Wextra -Werror -std=c++11 -pedantic -pedantic-errors -Weffc++
+LIBS = -lgsl -lcblas
+OBJ = network rng
 
-network.o: network.cxx
-	g++ -O2 -Wall -Wextra -Werror -std=c++11 -pedantic -pedantic-errors -c -o $@ $<
+all: libnncxx.a
 
-rng.o: rng.cxx
-	g++ -O2 -Wall -Wextra -Werror -std=c++11 -pedantic -pedantic-errors -c -o $@ $<
+libnncxx.a: $(patsubst %,obj/%.o,$(OBJ))
+	ar rvs libnncxx.a $^
 
-test_Affine: test_Affine.cxx network.o rng.o
-	g++ -O2 -Wall -Wextra -Werror -std=c++11 -pedantic -pedantic-errors -o $@ $^ -lgsl -lcblas
+obj/%.o: %.cxx %.h | obj
+	g++ $(CXXFLAGS) -c -o $@ $< $(LIBS)
+
+obj:
+	mkdir -p obj
+
+test_Affine: test_Affine.cxx libnncxx.a
+	g++ -O2 -Wall -Wextra -Werror -std=c++11 -pedantic -pedantic-errors -o $@ $^ $(LIBS)
 
 clean:
-	rm -f *.o test_Affine
+	rm -rf obj/
+	rm -f test_Affine
+	rm -f libnncxx.a
 
