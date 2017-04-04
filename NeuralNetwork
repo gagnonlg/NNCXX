@@ -1,0 +1,66 @@
+// -*- mode:c++ -*-
+
+#ifndef __NEURAL_NETWORK_H__
+#define __NEURAL_NETWORK_H__
+
+#include <cstddef>
+#include <iostream>
+
+#define NOT_IMPLEMENTED { std::cerr << __PRETTY_FUNCTION__ << " not implemented\n"; }
+#define NOT_IMPLEMENTED_RETURN(r) { std::cerr << __PRETTY_FUNCTION__ << " not implemented\n"; return r; }
+
+enum Loss {
+	MSE
+};
+
+class Dataset {
+public:
+	Dataset() NOT_IMPLEMENTED;
+};
+
+namespace Layer {
+class Layer {
+};
+
+class Affine : public Layer {
+public:
+	Affine(size_t, size_t) NOT_IMPLEMENTED;
+};
+
+class ReLU : public Layer {
+public:
+	ReLU() NOT_IMPLEMENTED;
+};
+}
+
+class NeuralNetwork {
+public:
+	void add(Layer::Layer &&) NOT_IMPLEMENTED;
+	void train(Dataset& dataX,
+		   Dataset& dataY,
+		   Loss loss,
+		   float learning_rate,
+		   size_t epochs,
+		   size_t batch_size,
+		   float validation_split) NOT_IMPLEMENTED;
+	void save(const char *) NOT_IMPLEMENTED;
+
+	Dataset operator()(Dataset&) NOT_IMPLEMENTED_RETURN(Dataset());
+};
+
+enum Style {
+	Default,
+	Dashed
+};
+
+class Plot {
+public:
+	Plot() NOT_IMPLEMENTED;
+	void scatter(Dataset& x, Dataset& y, const char *lbl) NOT_IMPLEMENTED;
+	void lines(Dataset& x, Dataset& y, const char *lbl, Style s = Style::Default) NOT_IMPLEMENTED;
+	void lines(Dataset& x, float (*)(float), const char *lbl, Style s = Style::Default) NOT_IMPLEMENTED;
+	void labels(const char *x, const char *y) NOT_IMPLEMENTED;
+	void save(const char *) NOT_IMPLEMENTED;
+};
+
+#endif
