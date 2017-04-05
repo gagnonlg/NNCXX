@@ -8,7 +8,7 @@
 #include <gsl/gsl_matrix_float.h>
 #include <gsl/gsl_vector_float.h>
 
-void gsl_error_handler(const char *reason, const char *file, int line, int gsl_errno)
+static void gsl_error_handler(const char *reason, const char *file, int line, int gsl_errno)
 {
 	std::string s_reason(reason);
 	std::string s_file(file);
@@ -22,9 +22,7 @@ void gsl_error_handler(const char *reason, const char *file, int line, int gsl_e
 	throw std::runtime_error(msg.c_str());
 }
 
-gsl_error_handler_t * __OLD_HANDLER = gsl_set_error_handler(&gsl_error_handler);
-
-
+static gsl_error_handler_t * __OLD_HANDLER = gsl_set_error_handler(&gsl_error_handler);
 
 class Vector {
 public:
