@@ -30,9 +30,11 @@ public:
 		__size(size),
 		__vector(gsl_vector_float_calloc(__size))
 		{};
+	~Vector() { gsl_vector_float_free(__vector); };
 	size_t size() { return __size; };
 	float get(size_t i) { return gsl_vector_float_get(__vector, i); };
 	void set(size_t i, float v) { gsl_vector_float_set(__vector, i, v); };
+
 private:
 	size_t __size;
 	gsl_vector_float *__vector;
@@ -44,6 +46,7 @@ public:
 		__size(std::make_pair(nrow, ncol)),
 		__matrix(gsl_matrix_float_calloc(__size.first, __size.second))
 		{};
+	~Matrix() { gsl_matrix_float_free(__matrix); };
 	const std::pair<size_t, size_t>& size() { return __size; };
 	float get(size_t i, size_t j) { return gsl_matrix_float_get(__matrix, i, j); };
 	void set(size_t i, size_t j, float v) { gsl_matrix_float_set(__matrix, i, j, v); };
