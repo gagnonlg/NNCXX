@@ -5,6 +5,7 @@
 #include <stdexcept>
 #include <string>
 
+#include <gsl/gsl_matrix_float.h>
 #include <gsl/gsl_vector_float.h>
 
 void gsl_error_handler(const char *reason, const char *file, int line, int gsl_errno)
@@ -37,6 +38,22 @@ public:
 private:
 	size_t __size;
 	gsl_vector_float *__vector;
+};
+
+class Matrix {
+public:
+	Matrix(size_t nrow, size_t ncol) :
+		__size(std::make_pair(nrow, ncol)),
+		__matrix(gsl_matrix_float_calloc(__size.first, __size.second))
+		{};
+	const std::pair<size_t, size_t>& size() { return __size; };
+	float get(size_t i, size_t j) { return gsl_matrix_float_get(__matrix, i, j); };
+	void set(size_t i, size_t j, float v) { gsl_matrix_float_set(__matrix, i, j, v); };
+	Matrix matmul(Matrix&) { return Matrix(0,0); }
+	Matrix add(Vector&) { return Matrix(0,0); };
+private:
+	std::pair<size_t, size_t> __size;
+	gsl_matrix_float *__matrix;
 };
 
 #endif
