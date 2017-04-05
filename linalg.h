@@ -52,6 +52,8 @@ public:
 	void set(size_t i, size_t j, float v) { gsl_matrix_float_set(__matrix, i, j, v); };
 	Matrix matmul(Matrix&) { return Matrix(0,0); }
 	Matrix add(Vector&) { return Matrix(0,0); };
+
+	static Matrix uniform(size_t nrow, size_t ncol, float low = 0.0, float high = 1.0);
 private:
 	std::pair<size_t, size_t> __size;
 	gsl_matrix_float *__matrix;

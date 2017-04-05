@@ -3,6 +3,7 @@
 #include <boost/test/unit_test.hpp>
 
 #include "linalg.h"
+#include "rng.h"
 
 BOOST_AUTO_TEST_CASE(Vector_ctor_size)
 {
@@ -71,3 +72,16 @@ BOOST_AUTO_TEST_CASE(Matrix_out_of_bound)
 	// set, both oob
 	BOOST_CHECK_THROW(matrix.set(10, 20, 0), std::runtime_error);
 }
+
+BOOST_AUTO_TEST_CASE(Matrix_uniform, * boost::unit_test::tolerance(0.00001))
+{
+	Random::seed(32706);
+	Matrix matrix = Matrix::uniform(2, 3, -10, 10);
+	BOOST_TEST(matrix.get(0,0) == -6.05539);
+	BOOST_TEST(matrix.get(0,1) == 6.16077);
+	BOOST_TEST(matrix.get(0,2) == -3.51725);
+	BOOST_TEST(matrix.get(1,0) == -3.05564);
+	BOOST_TEST(matrix.get(1,1) == 7.152);
+	BOOST_TEST(matrix.get(1,2) == -9.27988);
+}
+	
