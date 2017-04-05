@@ -1,8 +1,13 @@
-CXXFLAGS = -O2 -Wall -Wextra -Werror -std=c++11 -pedantic -pedantic-errors -Weffc++
+CXXFLAGS = -O2 -Wall -Wextra -Werror -std=c++11 -pedantic -pedantic-errors
 LIBS = -lgsl -lcblas
-OBJ = network rng
+OBJ = network rng linalg
 
 all: libnncxx.a
+
+unit_tests: unit_tests_linalg
+
+unit_tests_linalg: unit_tests_linalg.cxx libnncxx.a 
+	g++ $(CXXFLAGS) -o $@ $^ $(LIBS) -lboost_unit_test_framework
 
 libnncxx.a: $(patsubst %,obj/%.o,$(OBJ))
 	ar rvs libnncxx.a $^
