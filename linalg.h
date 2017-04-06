@@ -50,7 +50,7 @@ public:
 	const std::pair<size_t, size_t>& size() { return __size; };
 	float get(size_t i, size_t j) { return gsl_matrix_float_get(__matrix, i, j); };
 	void set(size_t i, size_t j, float v) { gsl_matrix_float_set(__matrix, i, j, v); };
-	Matrix matmul(Matrix&) { return Matrix(0,0); }
+	Matrix matmul(Matrix&);
 	Matrix add(Vector&) { return Matrix(0,0); };
 
 	static Matrix uniform(size_t nrow, size_t ncol, float low = 0.0, float high = 1.0);

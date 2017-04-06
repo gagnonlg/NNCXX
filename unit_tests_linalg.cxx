@@ -84,4 +84,45 @@ BOOST_AUTO_TEST_CASE(Matrix_uniform, * boost::unit_test::tolerance(0.00001))
 	BOOST_TEST(matrix.get(1,1) == 7.152);
 	BOOST_TEST(matrix.get(1,2) == -9.27988);
 }
+
+BOOST_AUTO_TEST_CASE(Matrix_matmul_size)
+{
+	Matrix m1(2, 3);
+	Matrix m2(3, 4);
+	Matrix m3 = m1.matmul(m2);
+	auto shp = m3.size();
+	BOOST_TEST(shp.first == 2);
+	BOOST_TEST(shp.second == 4);
+}
+
+BOOST_AUTO_TEST_CASE(Matrix_matmul_badsize)
+{
+	Matrix m1(2, 3);
+	Matrix m2(4, 5);
+	BOOST_CHECK_THROW(m1.matmul(m2), std::domain_error);
+}
+
+BOOST_AUTO_TEST_CASE(Matrix_matmul_mult)
+{
+	Matrix m1(2, 3);
+	m1.set(0,0,1);
+	m1.set(0,1,2);
+	m1.set(0,2,3);
+	m1.set(1,0,4);
+	m1.set(1,1,5);
+	m1.set(1,2,6);
 	
+	Matrix m2(3, 2);
+	m2.set(0,0,1);
+	m2.set(0,1,2);
+	m2.set(1,0,10);
+	m2.set(1,1,20);
+	m2.set(2,0,100);
+	m2.set(2,1,200);
+
+	Matrix m3 = m1.matmul(m2);
+	BOOST_TEST(m3.get(0,0) == (1*1 + 2*10 + 3*100));
+	BOOST_TEST(m3.get(0,1) == (1*2 + 2*20 + 3*200));
+	BOOST_TEST(m3.get(1,0) == (4*1 + 5*10 + 6*100));
+	BOOST_TEST(m3.get(1,1) == (4*2 + 5*20 + 6*200));
+}
