@@ -2,11 +2,13 @@ CXXFLAGS = -O2 -Wall -Wextra -Werror -std=c++11 -pedantic -pedantic-errors
 LIBS = -lgsl -lcblas
 OBJ = network rng linalg
 
-all: libnncxx.a
+UNIT_TESTS_TGT = $(patsubst %.cxx, unit_tests/%, $(wildcard unit_tests_*.cxx))
 
-unit_tests: unit_tests_linalg
+default: libnncxx.a
 
-unit_tests_linalg: unit_tests_linalg.cxx libnncxx.a 
+test: $(UNIT_TESTS_TGT)
+
+unit_tests/%: %.cxx libnncxx.a | unit_tests
 	g++ $(CXXFLAGS) -o $@ $^ $(LIBS) -lboost_unit_test_framework
 
 libnncxx.a: $(patsubst %,obj/%.o,$(OBJ))
@@ -18,11 +20,12 @@ obj/%.o: %.cxx %.h | obj
 obj:
 	mkdir -p obj
 
-test_Affine: test_Affine.cxx libnncxx.a
-	g++ -O2 -Wall -Wextra -Werror -std=c++11 -pedantic -pedantic-errors -o $@ $^ $(LIBS)
+unit_tests:
+	mkdir -p unit_tests
 
 clean:
 	rm -rf obj/
-	rm -f test_Affine
+	rm -rf unit_tests/
+	rm -f unit_tests_linalg
 	rm -f libnncxx.a
 
