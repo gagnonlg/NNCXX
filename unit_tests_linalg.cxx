@@ -180,3 +180,27 @@ BOOST_AUTO_TEST_CASE(Matrix_add_vector_col)
 			BOOST_TEST((mat.get(i,j) + i) == added.get(i, j));
 		
 }
+
+float mult100(float e)
+{
+	return e * 100;
+}
+
+BOOST_AUTO_TEST_CASE(Matrix_map_size)
+{
+	Matrix mat(5,6);
+	Matrix result = mat.map(mult100);
+	auto rsize = result.size();
+	BOOST_TEST(rsize.first == 5);
+	BOOST_TEST(rsize.second == 6);
+}
+
+BOOST_AUTO_TEST_CASE(Matrix_map_result)
+{
+	Random::seed(30383);
+	Matrix mat = Matrix::uniform(5,6);
+	Matrix result = mat.map(mult100);
+	for (size_t i = 0; i < 5; i++)
+		for (size_t j = 0; j < 6; j++)
+			BOOST_TEST(result.get(i,j) == mat.get(i,j) * 100);
+}

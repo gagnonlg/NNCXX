@@ -65,3 +65,11 @@ Matrix 	Matrix::add_vector(Vector& vec)
 	return result;
 }
 
+Matrix Matrix::map(float (*op)(float))
+{
+	Matrix result(__size.first, __size.second);
+	for (size_t i = 0; i < __size.first; i++)
+		for (size_t j = 0; j < __size.second; j++)
+			result.set(i, j, op(get(i,j)));
+	return result;
+}
