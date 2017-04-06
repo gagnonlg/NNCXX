@@ -1,0 +1,21 @@
+#!/bin/bash
+
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+RC=0
+
+if [ ! -d $DIR/unit_tests ]; then
+    RC=1
+fi
+
+for file in $DIR/unit_tests/*; do
+    echo "==> $(basename $file)"
+    if [ -x $file ]; then
+	$file
+	if [ 0 -ne $? ]; then
+	   RC=1
+	fi
+    fi
+done
+
+exit $RC
