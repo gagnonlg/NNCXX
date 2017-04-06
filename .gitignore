@@ -3,4 +3,5 @@
 *.o
 *~
 a.out
-test_Affine
+scratch.cxx
+unit_tests_linalg
