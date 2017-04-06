@@ -126,3 +126,57 @@ BOOST_AUTO_TEST_CASE(Matrix_matmul_mult)
 	BOOST_TEST(m3.get(1,0) == (4*1 + 5*10 + 6*100));
 	BOOST_TEST(m3.get(1,1) == (4*2 + 5*20 + 6*200));
 }
+
+BOOST_AUTO_TEST_CASE(Matrix_add_vector_size)
+{
+	Matrix mat(5,6);
+	Vector vec(6);
+	Matrix added = mat.add_vector(vec);
+
+	auto added_sz = added.size();
+	auto mat_sz = mat.size();
+	
+	BOOST_TEST(added_sz.first == mat_sz.first);
+	BOOST_TEST(added_sz.second == mat_sz.second);
+}
+
+BOOST_AUTO_TEST_CASE(Matrix_add_vector_badsize)
+{
+	Matrix mat(5,6);
+	Vector vec1(4);
+	Vector vec2(7);
+
+	BOOST_CHECK_THROW(mat.add_vector(vec1), std::domain_error);
+	BOOST_CHECK_THROW(mat.add_vector(vec2), std::domain_error);
+}
+
+
+BOOST_AUTO_TEST_CASE(Matrix_add_vector_row)
+{
+	Matrix mat(5,6);
+	Vector vec(6);
+	for (size_t i = 0; i < 6; i++)
+		vec.set(i, i);
+	
+	Matrix added = mat.add_vector(vec);
+
+	for (size_t i = 0; i < 5; i++)
+		for (size_t j = 0; j < 6; j++)
+			BOOST_TEST((mat.get(i,j) + j) == added.get(i, j));
+		
+}
+
+BOOST_AUTO_TEST_CASE(Matrix_add_vector_col)
+{
+	Matrix mat(5,6);
+	Vector vec(5);
+	for (size_t i = 0; i < 5; i++)
+		vec.set(i, i);
+	
+	Matrix added = mat.add_vector(vec);
+
+	for (size_t i = 0; i < 5; i++)
+		for (size_t j = 0; j < 6; j++)
+			BOOST_TEST((mat.get(i,j) + i) == added.get(i, j));
+		
+}

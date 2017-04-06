@@ -24,7 +24,10 @@ static void gsl_error_handler(const char *reason, const char *file, int line, in
 
 static gsl_error_handler_t * __OLD_HANDLER = gsl_set_error_handler(&gsl_error_handler);
 
+class Matrix; // forward decl to declare as friend of Vector
+
 class Vector {
+	friend class Matrix;
 public:
 	Vector(size_t size) :
 		__size(size),
@@ -51,7 +54,7 @@ public:
 	float get(size_t i, size_t j) { return gsl_matrix_float_get(__matrix, i, j); };
 	void set(size_t i, size_t j, float v) { gsl_matrix_float_set(__matrix, i, j, v); };
 	Matrix matmul(Matrix&);
-	Matrix add(Vector&) { return Matrix(0,0); };
+	Matrix add_vector(Vector&);
 
 	static Matrix uniform(size_t nrow, size_t ncol, float low = 0.0, float high = 1.0);
 private:

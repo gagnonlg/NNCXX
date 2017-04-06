@@ -36,3 +36,32 @@ Matrix Matrix::matmul(Matrix& mat)
 	return result;
 }
 
+Matrix 	Matrix::add_vector(Vector& vec)
+{
+	if (vec.size() != __size.first && vec.size() != __size.second) {
+		throw std::domain_error(
+			"Dimension of vector does not match any dimensions "
+			"of the matrix!"
+			);
+	}
+	Matrix result = Matrix(__size.first, __size.second);
+	gsl_matrix_float_memcpy(result.__matrix, __matrix);
+
+	if (vec.size() == __size.first) {
+		for (size_t i = 0; i < result.size().second; i++) {
+			gsl_vector_float_view col = gsl_matrix_float_column(
+				result.__matrix, i);
+			gsl_vector_float_add(&(col.vector), vec.__vector);
+		}
+
+	} else {
+		for (size_t i = 0; i < result.size().first; i++) {
+			gsl_vector_float_view row = gsl_matrix_float_row(
+				result.__matrix, i);
+			gsl_vector_float_add(&(row.vector), vec.__vector);
+		}
+	}
+
+	return result;
+}
+
