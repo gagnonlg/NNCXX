@@ -19,6 +19,10 @@ public:
 		__b(Vector(fan_out))
 		{};
 	const std::pair<size_t, size_t>& size() { return __size; };
+
+	Matrix propagate_forward(Matrix&);
+
+	Matrix & get_weights() { return __W; };
 private:
 	std::pair<size_t, size_t> __size;
 	Matrix __W;
