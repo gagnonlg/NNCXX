@@ -1,6 +1,6 @@
 CXXFLAGS = -O2 -Wall -Wextra -Werror -std=c++11 -pedantic -pedantic-errors
 LIBS = -lgsl -lcblas
-OBJ = network rng linalg
+OBJ = network rng linalg layers
 
 UNIT_TESTS_TGT = $(patsubst %.cxx, unit_tests/%, $(wildcard unit_tests_*.cxx))
 
