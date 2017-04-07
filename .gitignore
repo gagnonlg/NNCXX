@@ -2,6 +2,6 @@
 *.a
 *.o
 *~
+unit_tests/
 a.out
 scratch.cxx
-unit_tests_linalg
