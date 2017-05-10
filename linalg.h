@@ -25,7 +25,6 @@ static void gsl_error_handler(const char *reason, const char *file, int line, in
 static gsl_error_handler_t * __OLD_HANDLER = gsl_set_error_handler(&gsl_error_handler);
 
 class Matrix; // forward decl to declare as friend of Vector
-
 class Vector {
 	friend class Matrix;
 public:

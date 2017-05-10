@@ -20,8 +20,8 @@ BOOST_AUTO_TEST_CASE(Affine_propagate_forward_size)
 	Affine lr(10, 2);
 	Matrix X(100, 10);
 
-	Matrix result = lr.propagate_forward(X);
-
+	Matrix &result = lr.propagate_forward(X);
+	
 	BOOST_TEST(result.size().first == 100);
 	BOOST_TEST(result.size().second == 2);
 }
@@ -44,7 +44,7 @@ BOOST_AUTO_TEST_CASE(Affine_propagate_forward_identity)
 
 	Random::seed(28082);
 	Matrix X = Matrix::uniform(10, 2);
-	Matrix prod = lyr.propagate_forward(X);
+	Matrix & prod = lyr.propagate_forward(X);
 	for (size_t i = 0; i < X.size().first; i++)
 		for (size_t j = 0; j < X.size().second; j++)
 			BOOST_TEST(X.get(i, j) == prod.get(i, j));			
@@ -62,7 +62,7 @@ BOOST_AUTO_TEST_CASE(Affine_propagate_forward_computed)
 	Matrix X = Matrix(1, 2);
 	X.set(0, 0, 10);
 	X.set(0, 1, 100);
-	Matrix prod = lyr.propagate_forward(X);
+	Matrix & prod = lyr.propagate_forward(X);
 
 	BOOST_TEST(prod.get(0,0) == (1*10 + 100*3));
 	BOOST_TEST(prod.get(0,1) == (2*10 + 100*4));

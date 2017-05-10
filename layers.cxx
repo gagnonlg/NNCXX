@@ -1,8 +1,9 @@
 #include "layers.h"
 
-Matrix Affine::propagate_forward(Matrix& X)
+Matrix & Affine::propagate_forward(Matrix& X)
 {
-	Matrix prod = X.matmul(__W);
-	return prod.add_vector(__b);
+        Matrix Y = X.matmul(__W).add_vector(__b);
+	__Y.set(Y, true); // allow resize
+	return __Y;
 }
 	

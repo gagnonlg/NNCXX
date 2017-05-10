@@ -13,7 +13,7 @@ void Matrix::set(Matrix &other, bool allow_resize)
 	if (o_size.first != __size.first || o_size.second != __size.second) {
 		if (allow_resize) {
 			gsl_matrix_float_free(__matrix);
-			gsl_matrix_float_calloc(o_size.first, o_size.second);
+			__matrix = gsl_matrix_float_calloc(o_size.first, o_size.second);
 			__size = o_size;
 		}
 		else {
