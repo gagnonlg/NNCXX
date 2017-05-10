@@ -53,6 +53,7 @@ public:
 	const std::pair<size_t, size_t>& size() { return __size; };
 	float get(size_t i, size_t j) { return gsl_matrix_float_get(__matrix, i, j); };
 	void set(size_t i, size_t j, float v) { gsl_matrix_float_set(__matrix, i, j, v); };
+	void set(Matrix& mat) { gsl_matrix_float_memcpy(__matrix, mat.__matrix); };
 	Matrix matmul(Matrix&);
 	Matrix add_vector(Vector&);
 	Matrix map(float (*)(float));

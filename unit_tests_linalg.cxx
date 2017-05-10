@@ -204,3 +204,17 @@ BOOST_AUTO_TEST_CASE(Matrix_map_result)
 		for (size_t j = 0; j < 6; j++)
 			BOOST_TEST(result.get(i,j) == mat.get(i,j) * 100);
 }
+
+BOOST_AUTO_TEST_CASE(Matrix_set_matrix)
+{
+	Random::seed(30383);
+	Matrix mat1 = Matrix::uniform(5,6);
+	Matrix mat2 = Matrix::uniform(5,6);
+
+	mat1.set(mat2);
+
+	for (size_t i = 0; i < 5; i++)
+		for (size_t j = 0; j < 6; j++)
+			BOOST_TEST(mat1.get(i,j) == mat2.get(i,j));
+
+}
