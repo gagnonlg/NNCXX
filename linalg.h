@@ -53,9 +53,13 @@ public:
 	float get(size_t i, size_t j) { return gsl_matrix_float_get(__matrix, i, j); };
 	void set(size_t i, size_t j, float v) { gsl_matrix_float_set(__matrix, i, j, v); };
 	void set(Matrix& mat, bool allow_resize = false);
+	Matrix matmul(Matrix&, bool trans_1, bool trans_2);
 	Matrix matmul(Matrix&);
+	Matrix T_matmul(Matrix&);
+	Matrix matmul_T(Matrix&);
 	Matrix add_vector(Vector&);
 	Matrix map(float (*)(float));
+	void transpose();
 
 	static Matrix uniform(size_t nrow, size_t ncol, float low = 0.0, float high = 1.0);
 private:

@@ -127,6 +127,60 @@ BOOST_AUTO_TEST_CASE(Matrix_matmul_mult)
 	BOOST_TEST(m3.get(1,1) == (4*2 + 5*20 + 6*200));
 }
 
+BOOST_AUTO_TEST_CASE(Matrix_matmul_T1)
+{
+	Matrix m1(2, 3);
+	m1.set(0,0,1);
+	m1.set(0,1,2);
+	m1.set(0,2,3);
+	m1.set(1,0,4);
+	m1.set(1,1,5);
+	m1.set(1,2,6);
+	m1.transpose();
+	
+	Matrix m2(3, 2);
+	m2.set(0,0,1);
+	m2.set(0,1,2);
+	m2.set(1,0,10);
+	m2.set(1,1,20);
+	m2.set(2,0,100);
+	m2.set(2,1,200);
+
+	Matrix m3 = m1.T_matmul(m2);
+	BOOST_TEST(m3.get(0,0) == (1*1 + 2*10 + 3*100));
+	BOOST_TEST(m3.get(0,1) == (1*2 + 2*20 + 3*200));
+	BOOST_TEST(m3.get(1,0) == (4*1 + 5*10 + 6*100));
+	BOOST_TEST(m3.get(1,1) == (4*2 + 5*20 + 6*200));
+}
+
+BOOST_AUTO_TEST_CASE(Matrix_matmul_T2)
+{
+	Matrix m1(2, 3);
+	m1.set(0,0,1);
+	m1.set(0,1,2);
+	m1.set(0,2,3);
+	m1.set(1,0,4);
+	m1.set(1,1,5);
+	m1.set(1,2,6);
+	
+	Matrix m2(3, 2);
+	m2.set(0,0,1);
+	m2.set(0,1,2);
+	m2.set(1,0,10);
+	m2.set(1,1,20);
+	m2.set(2,0,100);
+	m2.set(2,1,200);
+	m2.transpose();
+
+	Matrix m3 = m1.matmul_T(m2);
+	BOOST_TEST(m3.get(0,0) == (1*1 + 2*10 + 3*100));
+	BOOST_TEST(m3.get(0,1) == (1*2 + 2*20 + 3*200));
+	BOOST_TEST(m3.get(1,0) == (4*1 + 5*10 + 6*100));
+	BOOST_TEST(m3.get(1,1) == (4*2 + 5*20 + 6*200));
+}
+
+
+
 BOOST_AUTO_TEST_CASE(Matrix_add_vector_size)
 {
 	Matrix mat(5,6);
@@ -243,5 +297,20 @@ BOOST_AUTO_TEST_CASE(Matrix_set_matrix)
 	for (size_t i = 0; i < 5; i++)
 		for (size_t j = 0; j < 6; j++)
 			BOOST_TEST(mat1.get(i,j) == mat2.get(i,j));
+
+}
+
+BOOST_AUTO_TEST_CASE(Matrix_transpose)
+{
+	Random::seed(30383);
+	Matrix mat1 = Matrix::uniform(5,6);
+	Matrix mat2(5,6);
+	mat2.set(mat1);
+
+	mat1.transpose();
+
+ 	for (size_t i = 0; i < 5; i++)
+		for (size_t j = 0; j < 6; j++)
+			BOOST_TEST(mat1.get(j,i) == mat2.get(i,j));
 
 }

@@ -35,24 +35,61 @@ Matrix Matrix::uniform(size_t nrow, size_t ncol, float low, float high)
 	return matrix;
 }
 
-Matrix Matrix::matmul(Matrix& mat)
-{
-	auto right_size = __size;
-	auto left_size = mat.size();
 
-	if (right_size.second != left_size.first) {
+Matrix Matrix::matmul(Matrix& mat, bool trans_1, bool trans_2)
+{
+	auto right_size = mat.size();
+
+	size_t r_row;
+	size_t r_col;
+
+	if (trans_1 && trans_2) {
+		r_row = __size.second;
+		r_col = right_size.first;
+	} else if (trans_1 && !trans_2) {
+		r_row = __size.second;
+		r_col = right_size.second;
+	} else if (!trans_1 && trans_2) {
+		r_row = __size.first;
+		r_col = right_size.first;
+	} else { // if (!trans_1 && !trans_2)
+		r_row = __size.first;
+		r_col = right_size.second;
+	}
+
+	if ((!trans_1 && !trans_2 && __size.second != right_size.first) ||
+	    (!trans_1 && trans_2 && __size.second != right_size.second) ||
+	    (trans_1 && !trans_2 && __size.first != right_size.first) ||
+	    (trans_1 && trans_2 && __size.first != right_size.second))
 		throw std::domain_error(
 			"Second dimension of first matrix "
 			"does not match first dimension of second matrix!"
 			);
-	}
-	       	
-	Matrix result = Matrix(__size.first, mat.size().second);
 
-	gsl_blas_sgemm(CblasNoTrans, CblasNoTrans,
-		       1.0, __matrix, mat.__matrix, 0.0, result.__matrix);
+	
+	Matrix result = Matrix(r_row, r_col);
+
+	gsl_blas_sgemm(
+		(trans_1)? CblasTrans : CblasNoTrans,
+		(trans_2)? CblasTrans : CblasNoTrans,
+		1.0, __matrix, mat.__matrix, 0.0, result.__matrix);
 
 	return result;
+}
+
+Matrix Matrix::matmul(Matrix &mat)
+{
+	return matmul(mat, false, false);
+}
+
+Matrix Matrix::T_matmul(Matrix &mat)
+{
+	return matmul(mat, true, false);
+}
+
+Matrix Matrix::matmul_T(Matrix &mat)
+{
+	return matmul(mat, false, true);
 }
 
 Matrix 	Matrix::add_vector(Vector& vec)
@@ -91,4 +128,11 @@ Matrix Matrix::map(float (*op)(float))
 		for (size_t j = 0; j < __size.second; j++)
 			result.set(i, j, op(get(i,j)));
 	return result;
+}
+
+void Matrix::transpose()
+{
+	Matrix mnew(__size.second, __size.first);
+	gsl_matrix_float_transpose_memcpy(mnew.__matrix, __matrix);
+	set(mnew, true); // allow resize
 }
