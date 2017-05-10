@@ -2,10 +2,25 @@
 #define BOOST_TEST_MODULE unit_tests_layers
 #include <boost/test/unit_test.hpp>
 
+#include <cmath>
 #include <stdexcept>
 
 #include "layers.h"
 #include "rng.h"
+
+float approx_gradient(float (*f)(float), float x)
+{
+	float eps = 1e-5;
+	return (f(x + 0.5 * eps) - f(x - 0.5 * eps)) / eps;
+}
+
+
+BOOST_AUTO_TEST_CASE(test_approx_gradient)
+{
+	BOOST_TEST(approx_gradient(std::sin, 0), std::cos(0));
+	BOOST_TEST(approx_gradient(std::sin, 0.5), std::cos(0.5));
+	BOOST_TEST(approx_gradient(std::sin, -2.245), std::cos(-2.245));
+}
 
 BOOST_AUTO_TEST_CASE(Affine_ctor_size)
 {
