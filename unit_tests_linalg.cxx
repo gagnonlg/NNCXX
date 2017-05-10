@@ -205,6 +205,33 @@ BOOST_AUTO_TEST_CASE(Matrix_map_result)
 			BOOST_TEST(result.get(i,j) == mat.get(i,j) * 100);
 }
 
+BOOST_AUTO_TEST_CASE(Matrix_set_matrix_resize)
+{
+	Random::seed(30383);
+	Matrix mat1 = Matrix::uniform(5,6);
+	Matrix mat2 = Matrix::uniform(4,7);
+
+	mat1.set(mat2, true);
+	BOOST_TEST(mat1.size().first == 4);
+	BOOST_TEST(mat1.size().second == 7);
+
+	for (size_t i = 0; i < 4; i++)
+		for (size_t j = 0; j < 7; j++)
+			BOOST_TEST(mat1.get(i,j) == mat2.get(i,j));
+
+}
+
+BOOST_AUTO_TEST_CASE(Matrix_set_matrix_noresize)
+{
+	Random::seed(30383);
+	Matrix mat1 = Matrix::uniform(5,6);
+	Matrix mat2 = Matrix::uniform(4,7);
+	
+	BOOST_CHECK_THROW(mat1.set(mat2), std::domain_error);
+}
+
+
+
 BOOST_AUTO_TEST_CASE(Matrix_set_matrix)
 {
 	Random::seed(30383);

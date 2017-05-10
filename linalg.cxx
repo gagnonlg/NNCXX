@@ -7,6 +7,25 @@
 #include "rng.h"
 
 
+void Matrix::set(Matrix &other, bool allow_resize)
+{
+	std::pair<size_t, size_t> o_size = other.size();
+	if (o_size.first != __size.first || o_size.second != __size.second) {
+		if (allow_resize) {
+			gsl_matrix_float_free(__matrix);
+			gsl_matrix_float_calloc(o_size.first, o_size.second);
+			__size = o_size;
+		}
+		else {
+			throw std::domain_error(
+				"Dimension of source matrix do not match those "
+				"of destination and resize not allowed"
+				);
+		}
+	}
+	gsl_matrix_float_memcpy(__matrix, other.__matrix);
+}
+
 Matrix Matrix::uniform(size_t nrow, size_t ncol, float low, float high)
 {
 	Matrix matrix(nrow, ncol);
