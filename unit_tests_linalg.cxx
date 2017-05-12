@@ -336,3 +336,32 @@ BOOST_AUTO_TEST_CASE(Matrix_get_row_values)
 		BOOST_TEST(row.get(i) == mat.get(0, i));
 }
 
+BOOST_AUTO_TEST_CASE(Vector_outer_product_size)
+{
+	Vector v1(2);
+	Vector v2(3);
+	Matrix m = v1.outer_product(v2);
+	BOOST_TEST(m.size().first == 2);
+	BOOST_TEST(m.size().second == 3);
+}
+
+BOOST_AUTO_TEST_CASE(Vector_outer_product_computed)
+{
+	Vector v1(2);
+	v1.set(0, 10);
+	v1.set(1, 100);
+	
+	Vector v2(3);
+	v2.set(0, 1);
+	v2.set(1, 2);
+	v2.set(2, 3);
+	
+	Matrix m = v1.outer_product(v2);
+
+	BOOST_TEST(m.get(0,0) == (1 * 10));
+	BOOST_TEST(m.get(1,0) == (1 * 100));	
+	BOOST_TEST(m.get(0,1) == (2 * 10));
+	BOOST_TEST(m.get(1,1) == (2 * 100));	
+	BOOST_TEST(m.get(0,2) == (3 * 10));
+	BOOST_TEST(m.get(1,2) == (3 * 100));	
+}

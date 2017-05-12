@@ -6,6 +6,12 @@
 #include "linalg.h"
 #include "rng.h"
 
+Matrix Vector::outer_product(Vector &v)
+{
+	Matrix mat(__size,v.size());
+	gsl_blas_sger(1.0, __vector, v.__vector, mat.__matrix);
+	return mat;
+}
 
 void Matrix::set(Matrix &other, bool allow_resize)
 {

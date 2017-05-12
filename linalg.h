@@ -36,6 +36,7 @@ public:
 	size_t size() { return __size; };
 	float get(size_t i) { return gsl_vector_float_get(__vector, i); };
 	void set(size_t i, float v) { gsl_vector_float_set(__vector, i, v); };
+	Matrix outer_product(Vector &v);
 
 private:
 	size_t __size;
@@ -43,6 +44,7 @@ private:
 };
 
 class Matrix {
+	friend class Vector;
 public:
 	Matrix(size_t nrow, size_t ncol) :
 		__size(std::make_pair(nrow, ncol)),
