@@ -98,6 +98,16 @@ Matrix Matrix::matmul_T(Matrix &mat)
 	return matmul(mat, false, true);
 }
 
+Matrix Matrix::add_matrix(Matrix& m)
+{
+	if (__size.first != m.size().first || __size.second != m.size().second)
+		throw std::domain_error("Dimension mismatch");
+	Matrix result(__size.first, __size.second);
+	result.set(*this);
+	gsl_matrix_float_add(result.__matrix, m.__matrix);
+	return result;
+}
+
 Matrix 	Matrix::add_vector(Vector& vec)
 {
 	if (vec.size() != __size.first && vec.size() != __size.second) {

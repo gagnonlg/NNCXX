@@ -59,6 +59,7 @@ public:
 	Matrix matmul(Matrix&);
 	Matrix T_matmul(Matrix&);
 	Matrix matmul_T(Matrix&);
+	Matrix add_matrix(Matrix&);
 	Matrix add_vector(Vector&);
 	Matrix map(float (*)(float));
 	void transpose();

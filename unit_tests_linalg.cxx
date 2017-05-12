@@ -179,6 +179,33 @@ BOOST_AUTO_TEST_CASE(Matrix_matmul_T2)
 	BOOST_TEST(m3.get(1,1) == (4*2 + 5*20 + 6*200));
 }
 
+BOOST_AUTO_TEST_CASE(Matrix_add_matrix_badsize)
+{
+	Matrix m1(5,6);
+	Matrix m2(7,8);
+	BOOST_CHECK_THROW(m1.add_matrix(m2), std::domain_error);
+}
+
+BOOST_AUTO_TEST_CASE(Matrix_add_matrix_return_size)
+{
+	Matrix m1(5,6);
+	Matrix m2(5,6);
+	Matrix m3 = m1.add_matrix(m2);
+	BOOST_TEST(m3.size().first == 5);
+	BOOST_TEST(m3.size().second == 6);
+}
+
+BOOST_AUTO_TEST_CASE(Matrix_add_matrix_value)
+{
+	Random::seed(14125);
+	Matrix m1 = Matrix::uniform(2,3);
+	Matrix m2 = Matrix::uniform(2,3);
+	Matrix m3 = m1.add_matrix(m2);
+	for (size_t i = 0; i < 2; i++)
+		for (size_t j = 0; j < 3; j++)
+			BOOST_TEST(m3.get(i,j) == (m1.get(i,j) + m2.get(i,j)));
+}
+
 
 
 BOOST_AUTO_TEST_CASE(Matrix_add_vector_size)
