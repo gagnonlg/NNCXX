@@ -136,3 +136,12 @@ void Matrix::transpose()
 	gsl_matrix_float_transpose_memcpy(mnew.__matrix, __matrix);
 	set(mnew, true); // allow resize
 }
+
+Vector Matrix::get_row(size_t i)
+{
+	if (i >= __size.first)
+		throw std::domain_error("Invalid row index");
+	Vector row(__size.second);
+	gsl_matrix_float_get_row(row.__vector, __matrix, i);
+	return row;
+}

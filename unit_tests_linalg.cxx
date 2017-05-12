@@ -314,3 +314,25 @@ BOOST_AUTO_TEST_CASE(Matrix_transpose)
 			BOOST_TEST(mat1.get(j,i) == mat2.get(i,j));
 
 }
+
+BOOST_AUTO_TEST_CASE(Matrix_get_row_bad_index)
+{
+	Matrix mat = Matrix(10, 4);
+	BOOST_CHECK_THROW(mat.get_row(101), std::domain_error);
+}
+
+BOOST_AUTO_TEST_CASE(Matrix_get_row_size)
+{
+	Matrix mat = Matrix(10, 4);
+	BOOST_TEST(mat.get_row(5).size() == 4);
+}
+
+BOOST_AUTO_TEST_CASE(Matrix_get_row_values)
+{
+	Random::seed(31113);
+	Matrix mat = Matrix::uniform(10,4);
+	Vector row = mat.get_row(0);
+	for (size_t i = 0; i < 4; i++)
+		BOOST_TEST(row.get(i) == mat.get(0, i));
+}
+
