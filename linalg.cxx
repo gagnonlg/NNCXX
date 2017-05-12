@@ -161,3 +161,11 @@ Vector Matrix::get_row(size_t i)
 	gsl_matrix_float_get_row(row.__vector, __matrix, i);
 	return row;
 }
+
+Matrix Matrix::scale(float f)
+{
+	Matrix result(__size.first, __size.second);
+	result.set(*this);
+	gsl_matrix_float_scale(result.__matrix, f);
+	return result;
+}

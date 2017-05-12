@@ -392,3 +392,21 @@ BOOST_AUTO_TEST_CASE(Vector_outer_product_computed)
 	BOOST_TEST(m.get(0,2) == (3 * 10));
 	BOOST_TEST(m.get(1,2) == (3 * 100));	
 }
+
+BOOST_AUTO_TEST_CASE(Matrix_scale_size)
+{
+	Matrix m1(5,6);
+	Matrix m2 = m1.scale(10);
+	BOOST_TEST(m2.size().first == 5);
+	BOOST_TEST(m2.size().second == 6);
+}
+
+BOOST_AUTO_TEST_CASE(Matrix_scale_result)
+{
+	Matrix m1 = Matrix::uniform(5,6);
+	Matrix m2 = m1.scale(10);
+
+	for (size_t i = 0; i < 5; i++)
+		for (size_t j = 0; j < 6; j++)
+			BOOST_TEST(m2.get(i,j) == (m1.get(i,j) * 10));
+}
