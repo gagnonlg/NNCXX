@@ -65,6 +65,7 @@ public:
 	void transpose();
 	Vector get_row(size_t i);
 	Matrix scale(float f);
+	Vector mean_row();
 
 	static Matrix uniform(size_t nrow, size_t ncol, float low = 0.0, float high = 1.0);
 private:

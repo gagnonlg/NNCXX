@@ -169,3 +169,18 @@ Matrix Matrix::scale(float f)
 	gsl_matrix_float_scale(result.__matrix, f);
 	return result;
 }
+
+Vector Matrix::mean_row()
+{
+        Vector mean(__size.second);
+
+	for (size_t i = 0; i < __size.first; i++) {
+		Vector row = get_row(i);
+		for (size_t j = 0; j < __size.second; j++)
+			mean.set(j, mean.get(j) + row.get(j));
+	}
+	for (size_t j = 0; j < __size.second; j++)
+		mean.set(j, mean.get(j) / __size.first);
+
+	return mean;
+}

@@ -410,3 +410,27 @@ BOOST_AUTO_TEST_CASE(Matrix_scale_result)
 		for (size_t j = 0; j < 6; j++)
 			BOOST_TEST(m2.get(i,j) == (m1.get(i,j) * 10));
 }
+
+BOOST_AUTO_TEST_CASE(Matrix_mean_row_size)
+{
+	Matrix m(5,8);
+	Vector v = m.mean_row();
+	BOOST_TEST(v.size() == m.size().second);
+}
+
+BOOST_AUTO_TEST_CASE(Matrix_mean_row_value)
+{
+	Matrix m(2, 3);
+	m.set(0,0,1);
+	m.set(1,0,2);
+	m.set(0,1,10);
+	m.set(1,1,20);
+	m.set(0,2,100);
+	m.set(1,2,200);
+
+	Vector v = m.mean_row();
+
+	BOOST_TEST(v.get(0) == 1.5);
+	BOOST_TEST(v.get(1) == 15);
+	BOOST_TEST(v.get(2) == 150);
+}
