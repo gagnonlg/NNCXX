@@ -353,3 +353,55 @@ BOOST_AUTO_TEST_CASE(Affine_propagate_backward_b)
 	for (size_t i = 0; i < no; i++)
 		BOOST_CHECK_CLOSE(dldb.get(i), approx(i), 0.1);
 }
+
+BOOST_AUTO_TEST_CASE(Affine_update_parameters_W)
+{
+	size_t ni = 2;
+	size_t no = 3;
+        
+	Affine trans(ni,no);
+	Matrix & W = trans.get_weights();
+	Matrix W_orig(ni, no);
+	W_orig.set(W);
+
+	Matrix & W_grad = trans.get_weights_gradients();
+	W_grad.set(0,0,1);
+	W_grad.set(0,1,10);
+     	W_grad.set(0,2,100);
+     	W_grad.set(1,0,1000);
+     	W_grad.set(1,1,10000);
+     	W_grad.set(1,2,100000);
+
+	trans.update_parameters(0.01);
+
+	BOOST_CHECK_CLOSE(W.get(0,0) , W_orig.get(0,0) + 0.01 * 1, 0.1);
+	BOOST_CHECK_CLOSE(W.get(0,1) , W_orig.get(0,1) + 0.01 * 10, 0.1);
+	BOOST_CHECK_CLOSE(W.get(0,2) , W_orig.get(0,2) + 0.01 * 100, 0.1);
+	BOOST_CHECK_CLOSE(W.get(1,0) , W_orig.get(1,0) + 0.01 * 1000, 0.1);
+	BOOST_CHECK_CLOSE(W.get(1,1) , W_orig.get(1,1) + 0.01 * 10000, 0.1);
+	BOOST_CHECK_CLOSE(W.get(1,2) , W_orig.get(1,2) + 0.01 * 100000, 0.1);
+}
+
+BOOST_AUTO_TEST_CASE(Affine_update_parameters_b)
+{
+	size_t ni = 2;
+	size_t no = 3;
+        
+	Affine trans(ni,no);
+	for (size_t i = 0; i < no; i++)
+		trans.get_biases().set(i, Random::uniform(-0.1,0.1)); 
+	Vector & b = trans.get_biases();
+	Vector b_orig(no);
+	b_orig.set(b);
+
+	Vector & b_grad = trans.get_biases_gradients();
+	b_grad.set(0,1);
+	b_grad.set(1,10);
+	b_grad.set(2,100);
+
+	trans.update_parameters(0.01);
+
+	BOOST_CHECK_CLOSE(b.get(0) , b_orig.get(0) + 0.01 * 1, 0.1);
+	BOOST_CHECK_CLOSE(b.get(1) , b_orig.get(1) + 0.01 * 10, 0.1);
+	BOOST_CHECK_CLOSE(b.get(2) , b_orig.get(2) + 0.01 * 100, 0.1);
+}

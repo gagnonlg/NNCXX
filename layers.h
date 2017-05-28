@@ -6,6 +6,7 @@ class Layer {
 public:
 	Matrix propagate_forward(Matrix& input);
 	Matrix propagate_backward(Vector& gradient);
+	void update_parameters(float stepsize);
 };
 
 class Affine : public Layer {
@@ -25,6 +26,7 @@ public:
 
 	Matrix propagate_forward(Matrix&);
 	Matrix propagate_backward(Matrix&);
+	void update_parameters(float stepsize);
 
 	Matrix & get_weights() { return __W; };
 	Matrix & get_weights_gradients() { return __W_grad; };

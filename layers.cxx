@@ -30,3 +30,14 @@ Matrix Affine::propagate_backward(Matrix &g_out)
 	return g_out.matmul_T(__W);
 }
 
+void Affine::update_parameters(float stepsize)
+{
+	// W update
+	for (size_t i = 0; i < __size.first; i++)
+		for (size_t j = 0; j < __size.second; j++)
+			__W.set(i,j,__W.get(i,j) + stepsize * __W_grad.get(i,j));
+	// b update
+	for (size_t i = 0; i < __size.second; i++)
+		__b.set(i, __b.get(i) + stepsize * __b_grad.get(i));
+
+}
