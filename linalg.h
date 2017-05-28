@@ -36,6 +36,7 @@ public:
 	size_t size() { return __size; };
 	float get(size_t i) { return gsl_vector_float_get(__vector, i); };
 	void set(size_t i, float v) { gsl_vector_float_set(__vector, i, v); };
+	void set(Vector &);
 	Matrix outer_product(Vector &v);
 
 private:

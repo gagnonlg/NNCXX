@@ -6,6 +6,13 @@
 #include "linalg.h"
 #include "rng.h"
 
+void Vector::set(Vector &other)
+{
+	if (__size != other.__size)
+		throw std::domain_error("size mismatch");
+	gsl_vector_float_memcpy(__vector, other.__vector);
+}
+
 Matrix Vector::outer_product(Vector &v)
 {
 	Matrix mat(__size,v.size());

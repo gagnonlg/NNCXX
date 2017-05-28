@@ -434,3 +434,27 @@ BOOST_AUTO_TEST_CASE(Matrix_mean_row_value)
 	BOOST_TEST(v.get(1) == 15);
 	BOOST_TEST(v.get(2) == 150);
 }
+
+BOOST_AUTO_TEST_CASE(Matrix_set_vector)
+{
+	Random::seed(30383);
+	Matrix m = Matrix::uniform(1,6);
+	Vector v1 = m.get_row(0);
+	Vector v2(6);
+
+	v2.set(v1);
+
+	for (size_t i = 0; i < 6; i++)
+		BOOST_TEST(v1.get(i) == v2.get(i));
+
+}
+
+BOOST_AUTO_TEST_CASE(Matrix_set_vector_badsize)
+{
+	Random::seed(30383);
+	Matrix m = Matrix::uniform(1,6);
+	Vector v1 = m.get_row(0);
+	Vector v2(7);
+
+	BOOST_CHECK_THROW(v2.set(v1), std::domain_error);
+}
